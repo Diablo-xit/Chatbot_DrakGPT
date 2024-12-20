@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot avec JSON (1000+ Questions)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .chat-container {
+      max-width: 400px;
+      margin: 50px auto;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .chat-header {
+      background-color: #0078D7;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    .chat-body {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 15px;
+    }
+    .chat-message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .chat-message.bot {
+      background-color: #e6f7ff;
+      text-align: left;
+    }
+    .chat-message.user {
+      background-color: #0078D7;
+      color: white;
+      text-align: right;
+    }
+    .chat-footer {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+    .chat-footer input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 10px;
+    }
+    .chat-footer button {
+      background-color: #0078D7;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 10px;
+      cursor: pointer;
+    }
+    .chat-footer button:hover {
+      background-color: #005bb5;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2>Dark-GPT💌</h2>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <!-- Messages will appear here -->
+    </div>
+    <div class="chat-footer">
+      <input type="text" id="userInput" placeholder="Tapez votre message...">
+      <button onclick="sendMessage()">Envoyer</button>
+    </div>
+  </div>
+
+  <script>
+  const chatBody = document.getElementById('chatBody');
+
+  const qaData = {
+    "questions": [
+      { "question": "Bonjour", "reponse": "Salut ! Comment puis-je vous aider ?" },
+      { "question": "Salut", "reponse": "Salut bro Comment ça va 🙃 ?" },
+      { "question": "Comment ça va", "reponse": "Je vais bien, merci ! Et toi ?" },
+      { "question": "cool", "reponse": "Carrément mec ! 😋" },
+      { "question": "stupide", "reponse": "Non mais, sérieusement t'as rien à faire, pas vrai ? ⚠️" },
+      { "question": "je reviens", "reponse": "Ok, je t'attendrai." },
+      { "question": "je m'ennuie", "reponse": "Ohhhhh, désolé ! 😅" },
+      { "question": "je t'aime", "reponse": "Je t'aime aussi, mon bb 😚" },
+      { "question": "cc", "reponse": "CC, je m'appelle DarkGPT. Bienvenue ! ❤️" },
+      { "question": "merci", "reponse": "Je suis là pour ça, ne me remercie pas ! 😌" },
+      { "question": "🤣", "reponse": "Qu'est-ce qui te fait rire ? 👀" },
+      { "question": "rien", "reponse": "Ok, c'est bien poto 🍷" },
+      { "question": "bye", "reponse": "Ok bye, reviens vite mon ami(e) 😘" },
+      { "question": "tu sais pirater?", "reponse": "Oui, mais je vais pas t'aider avec ça 👀🍷" },
+      { "question": "ok", "reponse": "Ok, super ! Comment puis-je t'aider ?" },
+      { "question": "fait moi une blague", "reponse": "Pourquoi les plongeurs plongent-ils toujours en arrière ? Parce que sinon ils tombent toujours dans le bateau !" },
+      { "question": "Cv et toi ?", "reponse": "Ouais, ça peut aller bro 🍷 !" }
+    ]
+  };
+
+  function sendMessage() {
+    const userInput = document.getElementById('userInput').value.trim();
+    if (userInput === "") return;
+
+    addMessage(userInput, "user");
+    setTimeout(() => getBotResponse(userInput), 1000); // Délai de 1 seconde avant que le bot réponde
+    document.getElementById('userInput').value = ""; 
+  }
+
+  function addMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('chat-message', sender);
+    messageDiv.textContent = text;
+    chatBody.appendChild(messageDiv);
+    chatBody.scrollTop = chatBody.scrollHeight; 
+  }
+
+  function getBotResponse(userMessage) {
+    let botResponse = "Désolé, je n'ai pas compris.";
+    const cleanInput = userMessage.trim().toLowerCase();
+
+    const qa = qaData.questions.find(q => cleanInput.includes(q.question.toLowerCase()));
+    if (qa) {
+      botResponse = qa.reponse;
+    }
+
+    addMessage(botResponse, "bot");
+  }
+</script>
+</body>
+</html>
